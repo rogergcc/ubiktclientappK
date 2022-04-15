@@ -14,3 +14,9 @@ This app uses [***MVVM (Model View View-Model)***](https://developer.android.com
 
 ![](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png)
 
+
+# Setup - Android Studio
+Android Studio Bumblebee | 2021.1.1 Patch 3 for Windows 64-bit (872 MiB)
+
+Android Gradle Plugin 7.1.2
+Gradle Version 7.2
