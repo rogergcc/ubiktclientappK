@@ -6,9 +6,12 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
+import com.rohitjakhar.mvvmtemplate.data.local.AppDao
 import com.rohitjakhar.mvvmtemplate.data.local.AppDatabase
 import com.rohitjakhar.mvvmtemplate.data.remote.webservice.AuthInterceptor
 import com.rohitjakhar.mvvmtemplate.data.remote.webservice.WebService
+import com.rohitjakhar.mvvmtemplate.data.repository.DataRepoImpl
+import com.rohitjakhar.mvvmtemplate.domain.repository.DataRepo
 import com.rohitjakhar.mvvmtemplate.util.Constant.BASE_URL
 import com.rohitjakhar.mvvmtemplate.util.Constant.DATA_STORE_NAME
 import com.rohitjakhar.mvvmtemplate.util.Constant.ROOM_DATA_BASE_NAME
@@ -72,11 +75,28 @@ object AppModule {
         .build()
         .create(WebService::class.java)
 
+
     @Provides
     @Singleton
     fun provideStockDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, ROOM_DATA_BASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun providePlacesDao(placesDatabase: AppDatabase): AppDao {
+        return placesDatabase.dao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideProductRepository(
+        dataSourceRemote: WebService,
+    ): DataRepo {
+        return DataRepoImpl(
+            dataSourceRemote
+        )
     }
 }

@@ -5,9 +5,9 @@ import com.rohitjakhar.mvvmtemplate.data.local.model.DataModel
 
 data class GetDataDto(
     @SerializedName("result")
-    val result: String
+    val photo: String
 )
 
 fun GetDataDto.toDataModel(): DataModel {
-    return DataModel(result = this.result)
+    return DataModel(photo = this.photo)
 }
