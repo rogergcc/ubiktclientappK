@@ -2,23 +2,91 @@ package com.rohitjakhar.mvvmtemplate.presentation.home
 
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.rohitjakhar.mvvmtemplate.data.local.model.DataModel
 import com.rohitjakhar.mvvmtemplate.domain.repository.DataRepo
+import com.rohitjakhar.mvvmtemplate.domain.usecases.GetPopularClientesUseCase
+import com.rohitjakhar.mvvmtemplate.util.ErrorType
 import com.rohitjakhar.mvvmtemplate.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val dataRepo: DataRepo
+//    private val dataRepo: DataRepo
+    private val getPopularClientesUseCase: GetPopularClientesUseCase
 ) : ViewModel() {
-    fun getData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            dataRepo.getData()
+//    fun getData() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            dataRepo.getData()
+//        }
+//    }
+
+    private val _state = MutableStateFlow(UiState())
+    val state: StateFlow<UiState> = _state.asStateFlow()
+
+
+//    fun fetchMainScreenMovies() = liveData(Dispatchers.IO) {
+//        emit(Resource.Loading())
+//        try {
+//            emit(Resource.Success((repo.invoke())))
+//        } catch (e: Exception) {
+//            emit(Resource.Failure(e))
+//        }
+//    }
+
+
+    init {
+        viewModelScope.launch {
+            getPopularClientesUseCase()
+                .catch { cause -> _state.update { it.copy(error = cause.localizedMessage) } }
+                .collect { result -> _state.update { UiState(data = result.data) } }
+        }
+
+//        getPopularClientesUseCase().onEach { result ->
+//            when (result) {
+//                is Resource.Success -> {
+//                    _state.value = UiState(data = result.data ?: emptyList())
+//                }
+//                is Resource.Error -> {
+////                    _state.value = UiState(
+////                        error = (result.errorType.errorMessage)
+////                    )
+//                    _state.update { UiState(error = result.errorType.errorMessage) }
+//                }
+//                is Resource.Loading -> {
+//                    _state.value = UiState(isLoading = true)
+//                }
+//            }
+//        }.launchIn(viewModelScope)
+
+    }
+
+    fun onUiReady() {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true)
+            val error = getPopularClientesUseCase().collect{
+                it.errorType.errorMessage
+            }
+
+            _state.value = _state.value.copy(isLoading = false, error = error.toString())
         }
     }
+
+    data class UiState(
+        val isLoading: Boolean = false,
+        val data: List<DataModel>? = null,
+
+//        val error: Error? = null
+//        val coins: List<Coin> = emptyList(),
+        val error: String = ""
+    )
+
+
 
 
 //    private fun loadData(refresh: Boolean = false) {

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rohitjakhar.mvvmtemplate.data.remote.dto.GetDataDto
 import com.rohitjakhar.mvvmtemplate.databinding.FragmentHomeBinding
+import com.rohitjakhar.mvvmtemplate.presentation.common.launchAndCollect
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.wait
 
@@ -42,7 +43,17 @@ class HomeFragment : Fragment() {
 
 //        mAdapterPlacesList.placeNearbyDetailsAction =
 
-        viewModel.getData()
+//        viewModel.()
+        val state = viewModel.state.value
+
+
+//        viewLifecycleOwner.launchAndCollect(viewModel.state) {
+//            binding.progressBar.visibility = it.isLoading
+//            binding.movies = it.movies
+//            binding.error = it.error?.let(mainState::errorToString)
+//        }
+
+
 
     }
 

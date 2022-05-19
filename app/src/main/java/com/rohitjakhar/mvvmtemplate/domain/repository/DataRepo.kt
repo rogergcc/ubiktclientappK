@@ -5,4 +5,5 @@ import com.rohitjakhar.mvvmtemplate.util.Resource
 
 interface DataRepo {
     suspend fun getData(): Resource<DataModel>
+
 }

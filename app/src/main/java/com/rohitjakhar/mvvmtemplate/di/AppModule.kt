@@ -9,8 +9,10 @@ import androidx.room.Room
 import com.rohitjakhar.mvvmtemplate.data.local.AppDao
 import com.rohitjakhar.mvvmtemplate.data.local.AppDatabase
 import com.rohitjakhar.mvvmtemplate.data.remote.webservice.AuthInterceptor
-import com.rohitjakhar.mvvmtemplate.data.remote.webservice.WebService
+import com.rohitjakhar.mvvmtemplate.data.remote.webservice.SevidorWebApi
 import com.rohitjakhar.mvvmtemplate.data.repository.DataRepoImpl
+import com.rohitjakhar.mvvmtemplate.data.repository.GetClientesRepoImpl
+import com.rohitjakhar.mvvmtemplate.domain.repository.ClientesRepository
 import com.rohitjakhar.mvvmtemplate.domain.repository.DataRepo
 import com.rohitjakhar.mvvmtemplate.util.Constant.BASE_URL
 import com.rohitjakhar.mvvmtemplate.util.Constant.DATA_STORE_NAME
@@ -68,12 +70,12 @@ object AppModule {
     @Singleton
     fun provideWebService(
         callFactory: okhttp3.Call.Factory
-    ): WebService = Retrofit.Builder()
+    ): SevidorWebApi = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .callFactory(callFactory)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-        .create(WebService::class.java)
+        .create(SevidorWebApi::class.java)
 
 
     @Provides
@@ -93,9 +95,9 @@ object AppModule {
     @Singleton
     @Provides
     fun provideProductRepository(
-        dataSourceRemote: WebService,
-    ): DataRepo {
-        return DataRepoImpl(
+        dataSourceRemote: SevidorWebApi,
+    ): ClientesRepository {
+        return GetClientesRepoImpl(
             dataSourceRemote
         )
     }
