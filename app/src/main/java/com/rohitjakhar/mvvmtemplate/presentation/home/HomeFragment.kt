@@ -9,8 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rohitjakhar.mvvmtemplate.data.remote.dto.GetDataDto
 import com.rohitjakhar.mvvmtemplate.databinding.FragmentHomeBinding
+import com.rohitjakhar.mvvmtemplate.domain.model.CharacterDetails
 import com.rohitjakhar.mvvmtemplate.presentation.common.launchAndCollect
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.wait
@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun goToPlaceDetailsView(placeItem: GetDataDto) {
+    private fun goToPlaceDetailsView(placeItem: CharacterDetails) {
 //        TODO("Not yet implemented")
         Log.d(TAG, "place  $placeItem")
     }
@@ -43,15 +43,15 @@ class HomeFragment : Fragment() {
 
 //        mAdapterPlacesList.placeNearbyDetailsAction =
 
-//        viewModel.()
-        val state = viewModel.state.value
+//        val state = viewModel.state.value
 
 
-//        viewLifecycleOwner.launchAndCollect(viewModel.state) {
-//            binding.progressBar.visibility = it.isLoading
-//            binding.movies = it.movies
-//            binding.error = it.error?.let(mainState::errorToString)
-//        }
+        viewLifecycleOwner.launchAndCollect(viewModel.state) {
+
+            binding.progressBar.visibility = if(it.isLoading)View.VISIBLE else View.GONE
+//            binding.movies = it.data
+            binding.tvError.text = it.error
+        }
 
 
 

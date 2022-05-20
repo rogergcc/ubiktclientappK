@@ -3,23 +3,26 @@ package com.rohitjakhar.mvvmtemplate.presentation.home
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.rohitjakhar.mvvmtemplate.base.BaseViewHolder
-import com.rohitjakhar.mvvmtemplate.data.remote.dto.GetDataDto
 import com.rohitjakhar.mvvmtemplate.databinding.PlaceItemBinding
+import com.rohitjakhar.mvvmtemplate.domain.model.CharacterDetails
 
 
 class PlaceAdapter(
-    val placeNearbyDetailsAction: (placeItem: GetDataDto) -> Unit,
+    val placeNearbyDetailsAction: (placeItem: CharacterDetails) -> Unit,
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
-    var mItemsPlace = listOf<GetDataDto>()
+    var mItemsPlace = listOf<CharacterDetails>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val itemBinding =
@@ -47,14 +50,14 @@ class PlaceAdapter(
     private inner class UpcomingPlacesViewHolder(
         val binding: PlaceItemBinding,
         val context: Context,
-    ) : BaseViewHolder<GetDataDto>(binding.root) {
-        override fun bind(item: GetDataDto) {
+    ) : BaseViewHolder<CharacterDetails>(binding.root) {
+        override fun bind(item: CharacterDetails) {
 
             binding.apply {
 //                tvTitleNamePlace.text = item.name
 //                tvAvAdressPlace.text = item.vicinity
 
-                Glide.with(context).load(item.photo)
+                Glide.with(context).load(item.profileImageUrl)
                     .centerCrop().into(imvPhotoPlace)
             }
         }

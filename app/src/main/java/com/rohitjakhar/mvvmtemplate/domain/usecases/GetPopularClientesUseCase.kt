@@ -1,10 +1,10 @@
 package com.rohitjakhar.mvvmtemplate.domain.usecases
 
-import com.rohitjakhar.mvvmtemplate.data.local.model.DataModel
-import com.rohitjakhar.mvvmtemplate.data.remote.dto.toDataModel
+import com.rohitjakhar.mvvmtemplate.data.mappers.toDomain
+import com.rohitjakhar.mvvmtemplate.domain.model.CharacterModel
 import com.rohitjakhar.mvvmtemplate.domain.repository.ClientesRepository
 import com.rohitjakhar.mvvmtemplate.util.ErrorType
-import com.rohitjakhar.mvvmtemplate.util.Resource
+import com.rohitjakhar.mvvmtemplate.util.ApiResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -19,20 +19,20 @@ class GetPopularClientesUseCase @Inject constructor(private val repository: Clie
 
 
 
-    operator fun invoke(): Flow<Resource<List<DataModel>>> = flow {
+    operator fun invoke(): Flow<ApiResource<CharacterModel>> = flow {
         try {
-            emit(Resource.Loading<List<DataModel>>())
+            emit(ApiResource.Loading<CharacterModel>())
 //            val coins = repository.getData(). { it.toCoin() }
-            val data = repository.getData().map { it.toDataModel() }
-            emit(Resource.Success<List<DataModel>>(data))
+            val data = repository.getData().toDomain()
+            emit(ApiResource.Success<CharacterModel>(data))
 
         } catch(e: HttpException) {
-            emit(Resource.Error(ErrorType.UNKNOWN,"An unexpected error occured"))
+            emit(ApiResource.Error(ErrorType.UNKNOWN,"An unexpected error occured"))
 //            emit(Resource.Error(ErrorType.UNKNOWN?: "An unexpected error occured"))
         } catch(e: IOException) {
-            emit(Resource.Error(ErrorType.NO_INTERNET))
+            emit(ApiResource.Error(ErrorType.NO_INTERNET))
         } catch (e: Exception) {
-            emit (Resource.Error(message = e.localizedMessage))
+            emit (ApiResource.Error(message = e.localizedMessage))
         }
     }
 

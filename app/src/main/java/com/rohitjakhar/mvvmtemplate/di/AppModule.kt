@@ -10,7 +10,6 @@ import com.rohitjakhar.mvvmtemplate.data.local.AppDao
 import com.rohitjakhar.mvvmtemplate.data.local.AppDatabase
 import com.rohitjakhar.mvvmtemplate.data.remote.webservice.AuthInterceptor
 import com.rohitjakhar.mvvmtemplate.data.remote.webservice.SevidorWebApi
-import com.rohitjakhar.mvvmtemplate.data.repository.DataRepoImpl
 import com.rohitjakhar.mvvmtemplate.data.repository.GetClientesRepoImpl
 import com.rohitjakhar.mvvmtemplate.domain.repository.ClientesRepository
 import com.rohitjakhar.mvvmtemplate.domain.repository.DataRepo

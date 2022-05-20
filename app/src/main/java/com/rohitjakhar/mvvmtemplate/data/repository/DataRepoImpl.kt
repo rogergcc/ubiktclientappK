@@ -1,14 +1,10 @@
 package com.rohitjakhar.mvvmtemplate.data.repository
 
-import com.rohitjakhar.mvvmtemplate.data.local.model.DataModel
-import com.rohitjakhar.mvvmtemplate.data.remote.dto.GetDataDto
-import com.rohitjakhar.mvvmtemplate.data.remote.dto.toDataModel
+import com.rohitjakhar.mvvmtemplate.data.remote.dto.CharacterDataDto
+import com.rohitjakhar.mvvmtemplate.data.remote.dto.CharactersDto
 import com.rohitjakhar.mvvmtemplate.data.remote.webservice.SevidorWebApi
+import com.rohitjakhar.mvvmtemplate.domain.model.CharacterDetails
 import com.rohitjakhar.mvvmtemplate.domain.repository.ClientesRepository
-import com.rohitjakhar.mvvmtemplate.domain.repository.DataRepo
-import com.rohitjakhar.mvvmtemplate.util.ErrorType
-import com.rohitjakhar.mvvmtemplate.util.Resource
-import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 class DataRepoImpl @Inject constructor(
@@ -37,7 +33,7 @@ class DataRepoImpl @Inject constructor(
 //    }
 
 
-    override suspend fun getData(): List<GetDataDto> {
+    override suspend fun getData(): CharactersDto {
         return sevidorWebApi.getData()
     }
 

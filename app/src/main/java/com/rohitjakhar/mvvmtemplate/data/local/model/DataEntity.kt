@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "dataModel")
-data class DataModel(
+data class DataEntity(
     @PrimaryKey
     val id: Int = -1,
     @ColumnInfo(name = "latitude")

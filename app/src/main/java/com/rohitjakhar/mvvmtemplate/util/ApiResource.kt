@@ -1,18 +1,18 @@
 package com.rohitjakhar.mvvmtemplate.util
 
-sealed class Resource<T>(
+sealed class ApiResource<T>(
     open val data: T? = null,
     open val message: String = "",
     open val errorType: ErrorType = ErrorType.UNKNOWN
 ) {
-    class Loading<T>() : Resource<T>()
+    class Loading<T>() : ApiResource<T>()
 
-    data class Success<T>(override val data: T?, override val message: String = "") : Resource<T>()
+    data class Success<T>(override val data: T?, override val message: String = "") : ApiResource<T>()
 
     data class Error<T>(
         override val errorType: ErrorType = ErrorType.UNKNOWN,
         override val message: String = errorType.errorMessage
-    ) : Resource<T>()
+    ) : ApiResource<T>()
 }
 
 enum class ErrorType(val errorMessage: String) {

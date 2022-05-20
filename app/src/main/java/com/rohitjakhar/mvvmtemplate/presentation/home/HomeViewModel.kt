@@ -1,16 +1,11 @@
 package com.rohitjakhar.mvvmtemplate.presentation.home
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.rohitjakhar.mvvmtemplate.data.local.model.DataModel
-import com.rohitjakhar.mvvmtemplate.domain.repository.DataRepo
+import com.rohitjakhar.mvvmtemplate.domain.model.CharacterDetails
 import com.rohitjakhar.mvvmtemplate.domain.usecases.GetPopularClientesUseCase
-import com.rohitjakhar.mvvmtemplate.util.ErrorType
-import com.rohitjakhar.mvvmtemplate.util.Resource
+import com.rohitjakhar.mvvmtemplate.util.ApiResource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,21 +39,21 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getPopularClientesUseCase()
                 .catch { cause -> _state.update { it.copy(error = cause.localizedMessage) } }
-                .collect { result -> _state.update { UiState(data = result.data) } }
+                .collect { result -> _state.update { UiState(data = result.data?.data) } }
         }
 
 //        getPopularClientesUseCase().onEach { result ->
 //            when (result) {
-//                is Resource.Success -> {
-//                    _state.value = UiState(data = result.data ?: emptyList())
+//                is ApiResource.Success -> {
+//                    _state.value = UiState(data = result.data.data ?: emptyList())
 //                }
-//                is Resource.Error -> {
-////                    _state.value = UiState(
-////                        error = (result.errorType.errorMessage)
-////                    )
+//                is ApiResource.Error -> {
+//                    _state.value = UiState(
+//                        error = (result.errorType.errorMessage)
+//                    )
 //                    _state.update { UiState(error = result.errorType.errorMessage) }
 //                }
-//                is Resource.Loading -> {
+//                is ApiResource.Loading -> {
 //                    _state.value = UiState(isLoading = true)
 //                }
 //            }
@@ -79,7 +74,7 @@ class HomeViewModel @Inject constructor(
 
     data class UiState(
         val isLoading: Boolean = false,
-        val data: List<DataModel>? = null,
+        val data: List<CharacterDetails>? = null,
 
 //        val error: Error? = null
 //        val coins: List<Coin> = emptyList(),
