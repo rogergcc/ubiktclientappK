@@ -18,7 +18,7 @@ class GetPopularClientesUseCase @Inject constructor(private val repository: Clie
 //    }
 
 
-
+    //Dejar el funcionalidad aqui o pasarlo a Repo
     operator fun invoke(): Flow<ApiResource<CharacterModel>> = flow {
         try {
             emit(ApiResource.Loading<CharacterModel>())

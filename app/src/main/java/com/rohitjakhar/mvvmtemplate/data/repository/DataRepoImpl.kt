@@ -32,7 +32,7 @@ class DataRepoImpl @Inject constructor(
 //        return sevidorWebApi.getData()
 //    }
 
-
+    //
     override suspend fun getData(): CharactersDto {
         return sevidorWebApi.getData()
     }

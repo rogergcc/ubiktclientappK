@@ -33,12 +33,13 @@
 
     <TextView
         android:id="@+id/tvError"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/buttonOk"
+        android:text="Ocurrio un error"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         android:textColor="?attr/colorError"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/rvPlaces"
         app:layout_constraintStart_toStartOf="@+id/rvPlaces"

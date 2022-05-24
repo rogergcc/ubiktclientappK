@@ -15,13 +15,10 @@ class HomeViewModel @Inject constructor(
 //    private val dataRepo: DataRepo
     private val getPopularClientesUseCase: GetPopularClientesUseCase
 ) : ViewModel() {
-//    fun getData() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            dataRepo.getData()
-//        }
-//    }
+
 
     private val _state = MutableStateFlow(UiState())
+
     val state: StateFlow<UiState> = _state.asStateFlow()
 
 
@@ -84,37 +81,6 @@ class HomeViewModel @Inject constructor(
 
 
 
-//    private fun loadData(refresh: Boolean = false) {
-//        isRequesting.set(true)
-//        mRepository.getListHeroes(refresh, object : DataSource.GetHeroesCallback {
-//            override fun onSuccess(data: List<HeroesModel>) {
-//                homeList.clear()
-//                homeList.addAll(data.map { HomeModel(it.name ?: "-", it.bio ?: "-", it.imageurl ?: "-") })
-//            }
-//
-//            override fun onError(errorMessage: String) {
-//                showMessage.value = errorMessage
-//                isRequesting.set(false)
-//
-//            }
-//
-//            override fun onFinish() {
-//                isRequesting.set(false)
-//            }
-//        })
-//
-//    }
-
-//    fun fetchHomeNearPlaces(latitude: String, longitude: String) = liveData(Dispatchers.IO) {
-//        emit(Resource.Loading())
-//        try {
-//            emit(Resource.Success((repo.invoke(latitude,longitude))))
-//        } catch (e: Exception) {
-//            emit(Resource.Failure(e))
-//        }
-//    }
-
-
 
 //    fun fetchRestaurants() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
 //        emit(Resource.Loading())
@@ -125,25 +91,7 @@ class HomeViewModel @Inject constructor(
 //        }
 //    }
 //
-//    fun getDisplayRestaurants(restaurants: List<Restaurant>): List<RestaurantDisplayItem> {
-//        return restaurants.map { restaurant ->
-//
-//            return@map RestaurantDisplayItem(
-//                id = restaurant.id,
-//                displayName = "Restaurant ${restaurant.name}",
-//
-//                displayDistance = "at ${ restaurant.distance.roundToOneDecimalPlace() } KM distance",
-//                imageUrl = restaurant.imageUrl,
-//                type = when (restaurant.type) {
-//                    "EAT_IN" -> RestaurantType.EAT_IN
-//                    "TAKE_AWAY" -> RestaurantType.TAKE_AWAY
-//                    else -> RestaurantType.DRIVE_THROUGH
-//                },
-//                latitude = restaurant.location.latitude,
-//                longitude = restaurant.location.longitude
-//            )
-//        }
-//    }
+
 
 
 //    viewModel.fetchRestaurants().observe(viewLifecycleOwner) { result ->
