@@ -6,6 +6,7 @@ import com.rohitjakhar.mvvmtemplate.domain.model.CharacterDetails
 import com.rohitjakhar.mvvmtemplate.domain.usecases.GetPopularClientesUseCase
 import com.rohitjakhar.mvvmtemplate.util.ApiResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
 //    private val dataRepo: DataRepo
-    private val getPopularClientesUseCase: GetPopularClientesUseCase
+    private val getPopularClientesUseCase: GetPopularClientesUseCase,
 ) : ViewModel() {
 
 
@@ -33,10 +34,15 @@ class HomeViewModel @Inject constructor(
 
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+
             getPopularClientesUseCase()
                 .catch { cause -> _state.update { it.copy(error = cause.localizedMessage) } }
-                .collect { result -> _state.update { UiState(data = result.data?.data) } }
+                .collect { result ->
+                    _state.update {
+                        UiState(data = result.data?.data)
+                    }
+                }
         }
 
 //        getPopularClientesUseCase().onEach { result ->
@@ -61,7 +67,7 @@ class HomeViewModel @Inject constructor(
     fun onUiReady() {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true)
-            val error = getPopularClientesUseCase().collect{
+            val error = getPopularClientesUseCase().collect {
                 it.errorType.errorMessage
             }
 
@@ -75,11 +81,8 @@ class HomeViewModel @Inject constructor(
 
 //        val error: Error? = null
 //        val coins: List<Coin> = emptyList(),
-        val error: String = ""
+        val error: String = "",
     )
-
-
-
 
 
 //    fun fetchRestaurants() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
@@ -91,7 +94,6 @@ class HomeViewModel @Inject constructor(
 //        }
 //    }
 //
-
 
 
 //    viewModel.fetchRestaurants().observe(viewLifecycleOwner) { result ->

@@ -9,12 +9,12 @@ plugins {
 def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 android {
-    compileSdk 32
-
+    compileSdk 33
+    namespace 'com.rohitjakhar.mvvmtemplate'
     defaultConfig {
         applicationId "com.rohitjakhar.mvvmtemplate"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -53,6 +53,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 
