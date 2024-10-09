@@ -1,5 +1,6 @@
 package com.rohitjakhar.mvvmtemplate.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rohitjakhar.mvvmtemplate.domain.model.CharacterDetails
@@ -32,15 +33,37 @@ class HomeViewModel @Inject constructor(
 //        }
 //    }
 
+    private fun generateMockData(): List<CharacterDetails> {
+        return listOf(
+            CharacterDetails(
+                id = 1,
+                profileImageUrl = "https://picsum.photos/200/300.webp",
+                characterName = "Character 1"
+            ),
+            CharacterDetails(
+                id = 2,
+                profileImageUrl = "https://picsum.photos/200/300.webp",
+                characterName = "Character 2"
+            ),
+            CharacterDetails(
+                id = 3,
+                profileImageUrl = "https://picsum.photos/200/300.webp",
+                characterName = "Character 3"
+            )
+        )
+    }
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
 
+        Log.d("TEST_LOGGER","HomeViewModel init: ")
+        viewModelScope.launch(Dispatchers.IO) {
+            val mockData = generateMockData()
             getPopularClientesUseCase()
                 .catch { cause -> _state.update { it.copy(error = cause.localizedMessage) } }
                 .collect { result ->
                     _state.update {
-                        UiState(data = result.data?.data)
+//                        UiState(data = result.data?.data)
+                        UiState(data = mockData)
                     }
                 }
         }
@@ -62,6 +85,32 @@ class HomeViewModel @Inject constructor(
 //            }
 //        }.launchIn(viewModelScope)
 
+    }
+
+    fun fetchData() {
+        Log.d("TEST_LOGGER","HomeViewModel fetchData: ")
+        viewModelScope.launch {
+            getPopularClientesUseCase()
+                .catch { cause -> _state.update { it.copy(error = cause.localizedMessage) } }
+                .collect { result ->
+                    when (result) {
+                        is ApiResource.Success -> {
+                            _state.value = UiState(data = result.data?.data ?: emptyList())
+                        }
+
+                        is ApiResource.Error -> {
+                            _state.value = UiState(
+                                error = (result.errorType.errorMessage)
+                            )
+                            _state.update { UiState(error = result.errorType.errorMessage) }
+                        }
+
+                        is ApiResource.Loading -> {
+                            _state.value = UiState(isLoading = true)
+                        }
+                    }
+                }
+        }
     }
 
     fun onUiReady() {

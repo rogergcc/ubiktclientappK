@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rohitjakhar.mvvmtemplate.R
 import com.rohitjakhar.mvvmtemplate.databinding.FragmentHomeBinding
 import com.rohitjakhar.mvvmtemplate.domain.model.CharacterDetails
 import com.rohitjakhar.mvvmtemplate.presentation.common.launchAndCollect
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import okhttp3.internal.wait
 
 @AndroidEntryPoint
@@ -40,17 +44,21 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = mAdapterPlacesList
         }
+        binding.btnGoDetails.setOnClickListener{
 
+            findNavController().navigate(R.id.action_homeFragment_to_shopProductDetailFragment)
+        }
 //        mAdapterPlacesList.placeNearbyDetailsAction =
 
 //        val state = viewModel.state.value
 
 
-        viewLifecycleOwner.launchAndCollect(viewModel.state) {
-
-            binding.progressBar.visibility = if(it.isLoading)View.VISIBLE else View.GONE
-//            binding.movies = it.data
-            binding.tvError.text = it.error
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.collect { state ->
+                binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+                binding.tvError.text = state.error
+                mAdapterPlacesList.mItemsPlace = state.data ?: emptyList()
+            }
         }
 
 
@@ -59,18 +67,23 @@ class HomeFragment : Fragment() {
 //        }
 
     }
-
+    fun sampleof(){
+        val a = 1
+        val b = 2
+        val c = a + b
+        Log.d(TAG, "sampleof: $c")
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 

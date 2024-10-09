@@ -54,8 +54,8 @@ class PlaceAdapter(
         override fun bind(item: CharacterDetails) {
 
             binding.apply {
-//                tvTitleNamePlace.text = item.name
-//                tvAvAdressPlace.text = item.vicinity
+                tvTitleNamePlace.text = item.characterName
+                tvAvAdressPlace.text = item.id.toString()
 
                 Glide.with(context).load(item.profileImageUrl)
                     .centerCrop().into(imvPhotoPlace)

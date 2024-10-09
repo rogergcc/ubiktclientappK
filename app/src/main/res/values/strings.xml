@@ -18,5 +18,6 @@
     <string name="text_dialog_location_rationale">A fin de mejorar la seguridad de los trabajadores durante la faena, Webcontrol puede tomar periódicamente datos de su ubicación. Puede activar esto en el menú Ajustes.</string>
     <string name="buttonOk">Aceptar</string>
     <string name="image_place">Image Place</string>
+    <string name="message_error">Ocurrio un error</string>
 
 </resources>
