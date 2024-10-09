@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.rohitjakhar.mvvmtemplate.R
 import com.rohitjakhar.mvvmtemplate.base.BaseViewHolder
 import com.rohitjakhar.mvvmtemplate.databinding.PlaceItemBinding
 import com.rohitjakhar.mvvmtemplate.domain.model.CharacterDetails
@@ -57,8 +58,12 @@ class PlaceAdapter(
                 tvTitleNamePlace.text = item.characterName
                 tvAvAdressPlace.text = item.id.toString()
 
-                Glide.with(context).load(item.profileImageUrl)
-                    .centerCrop().into(imvPhotoPlace)
+                Glide.with(context)
+                    .load(item.profileImageUrl)
+                    .placeholder(R.drawable.ic_launcher_foreground) // Placeholder image
+                    .centerCrop()
+                    .error(R.drawable.ic_launcher_foreground) // Error image
+                    .into(imvPhotoPlace)
             }
         }
     }
